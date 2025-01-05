@@ -42,9 +42,20 @@ class Graph:
             return all(edge == 0 for edge in self.adjacency_matrix[index])
         return False
 
-# Тестирование производительности
-def performance_test():
+# Тестирование 
+def performance_test(graph_type):
     graph = Graph()
+    
+    if graph_type == 'linear':
+        # Строим линейный граф с 1000 вершинами
+        for i in range(1000):
+            graph.add_vertex(f"Vertex {i}")
+        for i in range(999):
+            graph.add_edge(f"Vertex {i}", f"Vertex {i + 1}")
+    elif graph_type == 'empty':
+        # Строим пустой граф с 1000 вершинами
+        for i in range(1000):
+            graph.add_vertex(f"Vertex {i}")
     
     # Замер времени добавления вершин
     start_time = time.time()
@@ -59,10 +70,32 @@ def performance_test():
             graph.add_edge(f"Vertex {i}", f"Vertex {i + 1}")
     print(f"Время добавления 999 рёбер: {time.time() - start_time:.5f} секунд")
 
+    # Замер времени проверки рёбер
+    start_time = time.time()
+    for i in range(999):
+        graph.has_edge(f"Vertex {i}", f"Vertex {i + 1}")
+    print(f"Время проверки рёбер: {time.time() - start_time:.5f} секунд")
+
+    # Замер времени проверки изолированности
+    start_time = time.time()
+    for i in range(1000):
+        graph.is_isolated(f"Vertex {i}")
+    print(f"Время проверки изолированности: {time.time() - start_time:.5f} секунд")
+
+    # Замер времени удаления рёбер
+    start_time = time.time()
+    for i in range(999):
+        graph.remove_edge(f"Vertex {i}", f"Vertex {i + 1}")
+    print(f"Время удаления 999 рёбер: {time.time() - start_time:.5f} секунд")
+
     # Замер времени удаления вершин
     start_time = time.time()
     for i in range(1000):
         graph.remove_vertex(f"Vertex {i}")
     print(f"Время удаления 1000 вершин: {time.time() - start_time:.5f} секунд")
 
-performance_test()
+# Тестирование линейного графа
+print("Тестирование линейного графа:")
+performance_test('linear')
+print("\nТестирование пустого графа:")
+performance_test('empty')
