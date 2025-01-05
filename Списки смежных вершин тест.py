@@ -33,10 +33,32 @@ class Graph:
     def is_isolated(self, vertex):
         return vertex in self.adjacency_list and len(self.adjacency_list[vertex]) == 0
 
-# Тестирование производительности
-def performance_test():
+# Тестирование производительности для разных графов
+def performance_test(graph_type):
     graph = Graph()
-    
+
+    if graph_type == "linear":
+        # Строим линейный граф (граф с цепочкой из 1000 вершин)
+        for i in range(1000):
+            graph.add_vertex(i)
+        for i in range(999):
+            graph.add_edge(i, i + 1)
+
+    elif graph_type == "dense":
+        # Строим полный граф (граф с 1000 вершинами)
+        for i in range(1000):
+            graph.add_vertex(i)
+        for i in range(1000):
+            for j in range(i + 1, 1000):
+                graph.add_edge(i, j)
+
+    elif graph_type == "tree":
+        # Строим дерево (граф с 1000 вершинами, где каждая вершина соединена с одной родительской)
+        for i in range(1000):
+            graph.add_vertex(i)
+        for i in range(1, 1000):
+            graph.add_edge(i, (i - 1) // 2)  # Связываем с родительской вершиной
+
     # Замер времени добавления вершин
     start_time = time.time()
     for i in range(1000):
@@ -61,5 +83,16 @@ def performance_test():
         graph.remove_edge(i, (i + 1) % 1000)
     print(f"Время удаления 500 рёбер: {time.time() - start_time:.6f} секунд")
 
-# Запуск тестирования
-performance_test()
+# Запуск тестирования для линейного графа
+print("Тестирование для линейного графа:")
+performance_test("linear")
+
+
+# Запуск тестирования для полного графа
+print("\nТестирование для полного графа:")
+performance_test("dense")
+
+
+# Запуск тестирования для графа "дерево"
+print("\nТестирование для дерева:")
+performance_test("tree")
