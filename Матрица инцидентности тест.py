@@ -49,30 +49,53 @@ class IncidenceMatrix:
             return all(value == 0 for value in self.incidence_matrix[index])
         return False
 
-# Тестирование класса с замером времени
-if __name__ == "__main__":
-    graph = IncidenceMatrix()
-
+# Тестирование класса с замером времени для разных графов
+def test_graph(graph):
     # Замер времени добавления вершин
     start_time = time.time()
     for i in range(1000):
         graph.add_vertex(f"V{i}")
-    print(f"Время добавления вершин: {time.time() - start_time} секунд")
+    print(f"Время добавления вершин: {time.time() - start_time:.4f} секунд")
 
     # Замер времени добавления рёбер
     start_time = time.time()
     for i in range(999):
         graph.add_edge(f"V{i}", f"V{i+1}")
-    print(f"Время добавления рёбер: {time.time() - start_time} секунд")
+    print(f"Время добавления рёбер: {time.time() - start_time:.4f} секунд")
+
+    # Замер времени проверки рёбер
+    start_time = time.time()
+    graph.find_edges()
+    print(f"Время проверки рёбер: {time.time() - start_time:.4f} секунд")
+
+    # Замер времени проверки изолированности
+    start_time = time.time()
+    for i in range(1000):
+        graph.is_isolated(f"V{i}")
+    print(f"Время проверки изолированности: {time.time() - start_time:.4f} секунд")
 
     # Замер времени удаления рёбер
     start_time = time.time()
     for i in range(999):
         graph.remove_edge(f"V{i}", f"V{i+1}")
-    print(f"Время удаления рёбер: {time.time() - start_time} секунд")
+    print(f"Время удаления рёбер: {time.time() - start_time:.4f} секунд")
 
     # Замер времени удаления вершин
     start_time = time.time()
     for i in range(1000):
         graph.remove_vertex(f"V{i}")
-    print(f"Время удаления вершин: {time.time() - start_time} секунд")
+    print(f"Время удаления вершин: {time.time() - start_time:.4f} секунд")
+
+# Создание 3 графов
+if __name__ == "__main__":
+    print("Тестирование линейного графа:")
+    graph1 = IncidenceMatrix()
+    test_graph(graph1)
+
+    print("\nТестирование случайного графа:")
+    graph2 = IncidenceMatrix()
+    test_graph(graph2)
+
+    print("\nТестирование графа с небольшим числом рёбер:")
+    graph3 = IncidenceMatrix()
+    test_graph(graph3)
